@@ -1,12 +1,11 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
-inline constexpr auto DATA_MIN{ 1 };
-inline constexpr auto DATA_MAX{ 15 };
+#include <vector>		// for std::vector
 
 namespace random
 {
-	int generateNumber(const int min, const int max);
+	std::vector<int> generate_no_repeats_data(const int data_size);
 }
 
 #endif // !RANDOM_H
