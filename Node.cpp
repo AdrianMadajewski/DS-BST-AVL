@@ -1,5 +1,6 @@
 #include "Node.h"
 #include <iostream>		// for std::cout
+#include <cmath>		// for log2
 
 Node* make_empty(Node* node)
 {
@@ -30,10 +31,6 @@ Node* insert_key(Node* node, int new_key)
 
 Node* find_min(Node* node, bool log)
 {
-	if (log) {
-		std::cout << node->key << ' ';
-	}
-
 	if (node == nullptr) {
 		return node;
 	}
@@ -45,14 +42,14 @@ Node* find_min(Node* node, bool log)
 	else {
 		return find_min(node->left, log);
 	}
+
+	if (log) {
+		std::cout << node->key << ' ';
+	}
 }
 
 Node* find_max(Node* node, bool log)
 {
-	if (log) {
-		std::cout << node->key << ' ';
-	}
-
 	if (node == nullptr) {
 		return node;
 	}
@@ -64,18 +61,24 @@ Node* find_max(Node* node, bool log)
 	else {
 		return find_max(node->right, log);
 	}
+
+	if (log) {
+		std::cout << node->key << ' ';
+	}
 }
 
 Node* remove_key(Node* node, int key)
 {
 	Node* temp;
-
+	
 	if (node == nullptr) {
 		return node;
 	}
-
 	else if (key < node->key) {
 		node->left = remove_key(node->left, key);
+	}
+	else if (key > node->key) {
+		node->right = remove_key(node->right, key);
 	}
 	else if (node->left != nullptr && node->right != nullptr) {
 		temp = find_min(node->right);
@@ -120,3 +123,105 @@ void pre_order(Node* node) {
 		pre_order(node->right);
 	}
 }
+
+Node* right_rotate(Node* root) {
+
+	if (root == nullptr) {
+		return root;
+	}
+
+	if (root->left != nullptr) {
+		Node* left_child = root->left;
+		root->left = left_child->left;
+		left_child->left = left_child->right;
+		left_child->right = root->right;
+		root->right = left_child;
+
+		int tmp = root->key;
+		root->key = left_child->key;
+		left_child->key = tmp;
+	}
+	return root;
+}
+
+Node* left_rorate(Node* root) {
+
+	if (root == nullptr) {
+		return root;
+	}
+
+	if (root->right != nullptr) {
+		auto right_child = root->right;
+		root->right = right_child->right;
+		right_child->right = right_child->left;
+		right_child->left = root->left;
+		root->left = right_child;
+
+		int tmp = root->key;
+		root->key = right_child->key;
+		right_child->key = tmp;
+	}
+	return root;
+}
+
+Node* create_right_vine(Node* root) {
+	if (root == nullptr) {
+		return root;
+	}
+
+	while (root->left != nullptr) {
+		root = right_rotate(root);
+	}
+	if (root->right != nullptr) {
+		root->right = create_right_vine(root->right);
+	}
+	return root;
+}
+
+Node* balance_vine(Node* root, int node_count) {
+	const int times = static_cast<int>(log2(node_count));
+	auto new_root = root;
+	for (int i = 0; i < times; ++i) {
+		new_root = left_rorate(new_root);
+		root = new_root->right;
+		for (int j = 0; j < node_count / 2 - 1; ++j) {
+			root = left_rorate(root);
+			root = root->right;
+		}
+		node_count /= 2;
+	}
+	return new_root;
+}
+
+
+/* to jest do tworzenia drzewa avl xde
+void storeBSTNodes(Node* root, std::vector<Node*>& nodes) {
+	if (root == nullptr)
+		return;
+	storeBSTNodes(root->left, nodes);
+	nodes.emplace_back(root);
+	storeBSTNodes(root->right, nodes);
+}
+
+Node* buildTreeUtil(std::vector<Node*>& nodes, const int start, const int end) {
+	if (start > end)
+		return nullptr;
+
+	int mid = start + (end - start) / 2;
+	Node* root = nodes[mid];
+
+	root->left = buildTreeUtil(nodes, start, mid - 1);
+	root->right = buildTreeUtil(nodes, mid + 1, end);
+
+	return root;
+}
+
+Node* buildTree(Node* root) {
+	std::vector<Node*> nodes;
+	storeBSTNodes(root, nodes);
+
+	const int n = nodes.size();
+	return buildTreeUtil(nodes, 0, n - 1);
+}
+*/
+

@@ -1,8 +1,9 @@
 #ifndef NODE_H
 #define NODE_H
 
-struct Node
-{
+#include <vector>	// for std::vector
+
+struct Node {
 	int key;
 	Node* left;
 	Node* right;
@@ -21,6 +22,11 @@ Node* find(Node* node, int key);
 void in_order(Node* node);
 void pre_order(Node* node);
 
+// DSW
+Node* right_rotate(Node* root);
+Node* left_rorate(Node* root);
+Node* create_right_vine(Node* root);
+Node* balance_vine(Node* root, int node_count);
 
 
 #endif // !NODE_H

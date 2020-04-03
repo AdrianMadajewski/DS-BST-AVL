@@ -4,15 +4,15 @@
 #include <vector>	// for std::vector
 #include "Node.h"	
 
-class BST
-{
+class BST {
+	int height = 0;
 	Node* root;
-
 public:
-
 	BST();
 	BST(const std::vector<int> keys);
 	~BST();
+
+	const int get_height();
 
 	void insert(const int key);
 	void insert(const std::vector<int> keys);
@@ -32,6 +32,7 @@ public:
 	void print2D();
 	void print2D(const int key);
 
+	void DSW();
 };
 
 #endif // !BST_H
