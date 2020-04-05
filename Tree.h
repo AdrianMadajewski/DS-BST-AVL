@@ -26,6 +26,8 @@ public:
 	~Tree();
 
 	const int get_height();
+	const TreeType get_type();
+	const std::string get_string_type();
 
 	void insert(const int key);
 	void insert(const std::vector<int> &keys);

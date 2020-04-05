@@ -3,73 +3,70 @@
 #include "Random.h"
 #include "Input.h"
 #include "Printer.h"
-
-#include <algorithm>		// for std::find
-
-// TODO: to powinno sprawdzac powtorzenia - zrobione
-// TODO: przerzucic do pliku Input.cpp
-std::vector<int> get_user_data(const int data_size) {
-	std::vector<int> result;
-	using index_t = std::vector<int>::size_type;
-
-	for (index_t i{ 0 }; i < data_size; ++i) {
-		std::string index{ static_cast<char>(i + 48) };
-		const auto message = "data[" + index + "] = ";
-		while (true) {
-			std::cout << message;
-			const auto input{ getUserInput() };
-			auto found = std::find(result.begin(), result.end(), input);
-			if (found != result.end()) {
-				std::cerr << "Invalid input - (data cannot be reapeated) - please try again." << '\n';
-			}
-			else if (input <= 0) {
-				std::cerr << "Invalid input - (data must be greater than 0) - please try again." << '\n';
-			}
-			else {
-				result.emplace_back(input);
-				break;
-			}
-		}
-	}
-	return result;
-}
+#include "Node.h"
+#include "Utility.h"
 
 int main() {
-	/*
-	std::vector<int> keys{ 9, 1, 2, 3, 4, 5, 6, 7, 8, 10 };
-	Tree bst(keys, AVL);
+	bool user_data{ ask_user_if("Enter user data? : 1 = yes, 0 = no") };
 
-	bst.print2D();
+	if (user_data) {
 
-	bst.display_in_order();
-	bst.display_pre_order();
+		// BST
+		int user_size{ get_user_data_size("BST: Enter how many elements to enter: ") };
+		auto keys = get_user_keys(user_size);
 
-	bst.path_max();
-	bst.path_min();
-	*/
+		Tree* bst = new Tree(keys, BST);
+		user_decide(*bst);
+		delete bst;
 
-	bool userData{ askUserIf("Enter user data? : 1 = yes, 0 = false") };
-	if (userData) {
-		const int user_size{ getUserDataSize("Enter how many elements to enter: ") };
-		auto keys = get_user_data(user_size);
+		std::cin.get();
+		system("cls");
 
-		std::cout << "BST SECTION" << '\n';
-		Tree BST(keys, BST);
+		// AVL
+		user_size = get_user_data_size("AVL: Enter how many element to enter: ");
+		keys = get_user_keys(user_size);
 
-		/*
-		int user_choice = ask_user("jaki wybor")
-		switch(user_choice)
-			case cos : cos break;
-			case wyjdz : exit(0) -> lepiej return 0 bo why not
-			case skoncz sesje bst -> wyjdz z switcha i przejdz do sekcji AVL
-			default:
-				popros jeszcze raz o podanie co zrobic
+		Tree* avl = new Tree(keys, AVL);
+		user_decide(*avl);
+		delete avl;
 
-			to wszystko chyba powinno byc w funkcji
-
-		*/
+		std::cin.get();
+		system("cls");
 	}
 
+	bool random_data{ ask_user_if("Generate random data? : 1 = yes, 0 = no") };
 
+	if (random_data) {
+
+		// BST
+		int user_size{ get_user_data_size("BST: Enter how many elements to generate: ") };
+		auto keys{ random::generate_no_repeats_data(user_size) };
+
+		std::cout << "Displaying keys sequence: " << '\n';
+		print_keys(keys);
+
+		Tree* bst = new Tree(keys, BST);
+		user_decide(*bst);
+		delete bst;
+
+		std::cin.get();
+		system("cls");
+
+		// AVL
+		user_size = get_user_data_size("AVL: Enter how many element to generate: ");
+		keys = random::generate_no_repeats_data(user_size);
+
+		print_keys(keys);
+
+		Tree* avl = new Tree(keys, AVL);
+		user_decide(*avl);
+		delete avl;
+
+		std::cin.get();
+		system("cls");
+	}
+
+	// TESTING IN PROGRESS...
+	
 	return 0;
 }

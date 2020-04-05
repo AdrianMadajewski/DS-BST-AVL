@@ -40,6 +40,11 @@ Tree::Tree(std::vector<int> &keys, TreeType type) {
 	case BST:
 		root = create_BST(keys);
 		type = BST;
+		break;
+	default:
+		root = nullptr;
+		type = NONE;
+		break;
 	}
 	
 	height += size;
@@ -55,6 +60,14 @@ Tree::~Tree() {
 
 const int Tree::get_height() {
 	return height;
+}
+
+const TreeType Tree::get_type() {
+	return type;
+}
+
+const std::string Tree::get_string_type() {
+	return s_type;
 }
 
 void Tree::insert(const int key) {
