@@ -16,11 +16,8 @@ Node* make_empty(Node* node)
 
 Node* insert_key(Node* node, int new_key)
 {
-	if (node == nullptr)
-	{
-		node = new Node;
-		node->key = new_key;
-		node->left = node->right = nullptr;
+	if (node == nullptr) {
+		node = new Node(new_key);
 	}
 	else if (new_key < node->key)
 		node->left = insert_key(node->left, new_key);
@@ -31,6 +28,10 @@ Node* insert_key(Node* node, int new_key)
 
 Node* find_min(Node* node, bool log)
 {
+	if (log) {
+		std::cout << node->key << ' ';
+	}
+
 	if (node == nullptr) {
 		return node;
 	}
@@ -42,32 +43,28 @@ Node* find_min(Node* node, bool log)
 	else {
 		return find_min(node->left, log);
 	}
-
-	if (log) {
-		std::cout << node->key << ' ';
-	}
 }
 
 Node* find_max(Node* node, bool log)
 {
+	if (log) {
+		std::cout << node->key << ' ';
+	}
+
 	if (node == nullptr) {
 		return node;
 	}
 
-	else if (node->right == nullptr) {
+	else if (node->right == nullptr) {	
 		return node;
 	}
 
 	else {
 		return find_max(node->right, log);
 	}
-
-	if (log) {
-		std::cout << node->key << ' ';
-	}
 }
 
-Node* remove_key(Node* node, int key)
+Node* remove_key(Node* node, const int key)
 {
 	Node* temp;
 	
@@ -97,7 +94,7 @@ Node* remove_key(Node* node, int key)
 	return node;
 }
 
-Node* find(Node* node, int key) {
+Node* find(Node* node, const int key) {
 	if (node == nullptr)
 		return node;
 	else if (key < node->key)
@@ -108,19 +105,19 @@ Node* find(Node* node, int key) {
 		return node;
 }
 
-void in_order(Node* node) {
+void print_in_order(Node* node) {
 	if (node != nullptr) {
-		in_order(node->left);
+		print_in_order(node->left);
 		std::cout << node->key << ' ';
-		in_order(node->right);
+		print_in_order(node->right);
 	}
 }
 
-void pre_order(Node* node) {
+void print_pre_order(Node* node) {
 	if (node != nullptr) {
 		std::cout << node->key << ' ';
-		pre_order(node->left);
-		pre_order(node->right);
+		print_pre_order(node->left);
+		print_pre_order(node->right);
 	}
 }
 
@@ -192,36 +189,27 @@ Node* balance_vine(Node* root, int node_count) {
 	}
 	return new_root;
 }
-
-
-/* to jest do tworzenia drzewa avl xde
-void storeBSTNodes(Node* root, std::vector<Node*>& nodes) {
-	if (root == nullptr)
-		return;
-	storeBSTNodes(root->left, nodes);
-	nodes.emplace_back(root);
-	storeBSTNodes(root->right, nodes);
-}
-
-Node* buildTreeUtil(std::vector<Node*>& nodes, const int start, const int end) {
+	
+Node* create_AVL(const std::vector<int>& keys, const int start, const int end) {
 	if (start > end)
 		return nullptr;
 
 	int mid = start + (end - start) / 2;
-	Node* root = nodes[mid];
+	Node* root = new Node(keys[mid]);
 
-	root->left = buildTreeUtil(nodes, start, mid - 1);
-	root->right = buildTreeUtil(nodes, mid + 1, end);
+	root->left = create_AVL(keys, start, mid - 1);
+	root->right = create_AVL(keys, mid + 1, end);
 
 	return root;
 }
 
-Node* buildTree(Node* root) {
-	std::vector<Node*> nodes;
-	storeBSTNodes(root, nodes);
-
-	const int n = nodes.size();
-	return buildTreeUtil(nodes, 0, n - 1);
+Node* create_BST(const std::vector<int>& keys) {
+	using index_t = std::vector<int>::size_type;
+	const auto size = keys.size();
+	Node* root = nullptr;
+	for (index_t i{ 0 }; i < size; ++i) {
+		std::cout << "Inserting : " << keys.at(i) << '\n';
+		root = insert_key(root, keys.at(i));
+	}
+	return root;
 }
-*/
-

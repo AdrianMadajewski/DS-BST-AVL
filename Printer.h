@@ -11,10 +11,7 @@ struct Trunk
 	Trunk* prev;
 	std::string str;
 
-	Trunk(Trunk* prev, std::string str) {
-		this->prev = prev;
-		this->str = str;
-	}
+	Trunk(Trunk *prev, const std::string &str) : prev(prev), str(str) {};
 };
 
 void showTrunks(Trunk* p);

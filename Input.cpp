@@ -4,7 +4,8 @@
 #include <limits>		// for std::numeric_limtis<std::streamsize>::max()
 #include <iostream>
 
-int getUserInput(const std::string_view& message)
+// change this to normal case notation
+int getUserInput(const std::string& message)
 {
 	if (!message.empty())
 		std::cout << message << '\n';
@@ -18,7 +19,7 @@ int getUserInput(const std::string_view& message)
 		{
 			std::cin.clear();
 			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			std::cout << "Invalid input - please try again." << '\n';
+			std::cerr << "Invalid input - please try again." << '\n';
 		}
 		else
 		{
@@ -28,7 +29,7 @@ int getUserInput(const std::string_view& message)
 	}
 }
 
-int getUserDataSize(const std::string_view& message)
+int getUserDataSize(const std::string& message)
 {
 	if (!message.empty())
 		std::cout << message << '\n';
@@ -39,11 +40,11 @@ int getUserDataSize(const std::string_view& message)
 		if (x >= 1 && x <= USER_DATA_SIZE_MAX)
 			return x;
 		else
-			std::cout << "Data size must be greater than 0 and less than or equal to " << USER_DATA_SIZE_MAX << ". Try again." << '\n';
+			std::cerr << "Data size must be greater than 0 and less than or equal to " << USER_DATA_SIZE_MAX << ". Try again." << '\n';
 	}
 }
 
-bool askUserIf(const std::string_view& message)
+bool askUserIf(const std::string& message)
 {
 	if (!message.empty())
 		std::cout << message << '\n';
@@ -58,7 +59,7 @@ bool askUserIf(const std::string_view& message)
 		case 1:
 			return true;
 		default:
-			std::cout << "Invalid input - please try again." << '\n';
+			std::cerr << "Invalid input - please try again." << '\n';
 			break;
 		}
 	}
