@@ -2,15 +2,19 @@
 #include <iostream>		// for std::cout
 #include <cmath>		// for log2
 
-Node* make_empty(Node* node)
+Node* make_empty(Node* node, bool log)
 {
 	if (node == nullptr) {
 		return node;
 	}
 
-	make_empty(node->left);
-	make_empty(node->right);
-	std::cout << "Deleted key : " << node->key << '\n';
+	make_empty(node->left, log);
+	make_empty(node->right, log);
+
+	if (log) {
+		std::cout << "Deleted key : " << node->key << '\n';
+	}
+	
 	delete node;
 }
 
@@ -105,11 +109,15 @@ Node* find(Node* node, const int key) {
 		return node;
 }
 
-void print_in_order(Node* node) {
+void print_in_order(Node* node, const bool log) {
 	if (node != nullptr) {
-		print_in_order(node->left);
-		std::cout << node->key << ' ';
-		print_in_order(node->right);
+		print_in_order(node->left, log);
+
+		if (log) {
+			std::cout << node->key << ' ';
+		}
+
+		print_in_order(node->right, log);
 	}
 }
 
@@ -190,25 +198,31 @@ Node* balance_vine(Node* root, int node_count) {
 	return new_root;
 }
 	
-Node* create_AVL(const std::vector<int>& keys, const int start, const int end) {
+Node* create_AVL(const std::vector<int>& keys, const int start, const int end, const bool log) {
 	if (start > end)
 		return nullptr;
 
 	int mid = start + (end - start) / 2;
 	Node* root = new Node(keys[mid]);
 
-	root->left = create_AVL(keys, start, mid - 1);
-	root->right = create_AVL(keys, mid + 1, end);
+	if (log) {
+		std::cout << "Inserting : " << root->key << '\n';
+	}
+
+	root->left = create_AVL(keys, start, mid - 1, log);
+	root->right = create_AVL(keys, mid + 1, end, log);
 
 	return root;
 }
 
-Node* create_BST(const std::vector<int>& keys) {
+Node* create_BST(const std::vector<int>& keys, const bool log) {
 	using index_t = std::vector<int>::size_type;
 	const auto size = keys.size();
 	Node* root = nullptr;
 	for (index_t i{ 0 }; i < size; ++i) {
-		std::cout << "Inserting : " << keys.at(i) << '\n';
+		if (log) {
+			std::cout << "Inserting : " << keys.at(i) << '\n';
+		}
 		root = insert_key(root, keys.at(i));
 	}
 	return root;

@@ -14,7 +14,7 @@ void showTrunks(Trunk* p) {
 }
 
 // Recursive function to print binary tree using inorder traversal
-void printTree(Node* node, Trunk* prev, bool isLeft) {
+void printTree(Node* node, Trunk* prev, bool isRight) {
 	if (node == nullptr) {
 		return;
 	}
@@ -22,12 +22,12 @@ void printTree(Node* node, Trunk* prev, bool isLeft) {
 	std::string prev_str = "    ";
 	Trunk* trunk = new Trunk(prev, prev_str);
 
-	printTree(node->left, trunk, true);
+	printTree(node->right, trunk, true);
 
 	if (!prev) {
 		trunk->str = "---";
 	}
-	else if (isLeft) {
+	else if (isRight) {
 		trunk->str = ".---";
 		prev_str = "   |";
 	}
@@ -44,5 +44,5 @@ void printTree(Node* node, Trunk* prev, bool isLeft) {
 	}
 	trunk->str = "   |";
 
-	printTree(node->right, trunk, false);
+	printTree(node->left, trunk, false);
 }

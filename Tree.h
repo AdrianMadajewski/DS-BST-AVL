@@ -12,6 +12,7 @@ enum TreeType
 	AVL,
 };
 
+// Utility function
 std::string TreeType_to_string(TreeType type);
 
 class Tree {
@@ -46,6 +47,8 @@ public:
 
 	void print2D();
 	void print2D(const int key);
+
+	void clear();
 
 	void DSW();
 };

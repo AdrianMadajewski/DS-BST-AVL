@@ -34,11 +34,11 @@ Tree::Tree(std::vector<int> &keys, TreeType type) {
 	{
 	case AVL:
 		std::sort(keys.begin(), keys.end());
-		root = create_AVL(keys, 0, size - 1);
+		root = create_AVL(keys, 0, size - 1, true);
 		type = AVL;
 		break;
 	case BST:
-		root = create_BST(keys);
+		root = create_BST(keys, true);
 		type = BST;
 		break;
 	default:
@@ -52,9 +52,8 @@ Tree::Tree(std::vector<int> &keys, TreeType type) {
 }
 
 Tree::~Tree() {
-	std::cout << "Destorying " << s_type << " instance of an object. (post order method)" << '\n';
-	root = make_empty(root);
-	root = nullptr;
+	std::cout << "Destorying " << s_type << " instance of an object." << '\n';
+	root = make_empty(root, true);
 	std::cout << "Finished" << '\n';
 }
 
@@ -148,7 +147,7 @@ void Tree::display_in_order() {
 		std::cout << "The tree is empty." << '\n';
 	}
 	else {
-		print_in_order(root);
+		print_in_order(root, true);
 		std::cout << '\n';
 	}
 	std::cout << "Finished." << '\n';
@@ -161,7 +160,7 @@ void Tree::display_in_order(const int key) {
 	}
 	else {
 		std::cout << "Displaying Tree instance from key " << key << '\n';
-		print_in_order(new_root);
+		print_in_order(new_root, true);
 		std::cout << '\n';
 	}
 	std::cout << "Finished." << '\n';
@@ -220,5 +219,12 @@ void Tree::DSW() {
 	std::cout << "Created right vine." << '\n';
 	root = balance_vine(root, height);
 	std::cout << "Balanced vine." << '\n';
+	std::cout << "Finished" << '\n';
+}
+
+void Tree::clear() {
+	std::cout << "Clearing the tree." << '\n';
+	root = make_empty(root, true);
+	root = nullptr;
 	std::cout << "Finished" << '\n';
 }

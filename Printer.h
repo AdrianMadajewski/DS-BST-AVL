@@ -15,6 +15,6 @@ struct Trunk
 };
 
 void showTrunks(Trunk* p);
-void printTree(Node* node, Trunk* prev, bool isLeft);
+void printTree(Node* node, Trunk* prev, bool isRight);
 
 #endif // !PRINTER_H

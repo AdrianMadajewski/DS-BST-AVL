@@ -5,6 +5,7 @@
 #include <limits>		// for std::numeric_limtis<std::streamsize>::max()
 #include <iostream>
 #include <algorithm>	// for std::find
+#include <fstream>		// for std::ifstream
 
 int get_user_input(const std::string& message)
 {
@@ -103,4 +104,30 @@ std::vector<int> get_keys_to_remove(const int keys_size, const Tree& tree) {
 		result.emplace_back(key);
 	}
 	return result;
+}
+
+std::vector<int> load_keys_from_file(const std::string& filename)
+{
+	std::vector<int> data;
+	std::ifstream file;
+	file.open(filename);
+
+	if (!file.is_open())
+	{
+		std::cout << "Couldn't find the file. Please restart." << '\n';
+		std::cin.get();
+		exit(-1);
+	}
+	else
+	{
+		std::cout << "Succesfully read from file " << filename << '\n';
+		while (!file.eof())
+		{
+			int x;
+			file >> x;
+			data.emplace_back(x);
+		}
+	}
+
+	return data;
 }

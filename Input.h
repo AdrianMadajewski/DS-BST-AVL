@@ -13,5 +13,6 @@ int get_user_data_size(const std::string& message = "", const int data_size = US
 bool ask_user_if(const std::string& message = "");
 std::vector<int> get_user_keys(const int keys_size);
 std::vector<int> get_keys_to_remove(const int keys_size, const Tree& tree);
+std::vector<int> load_keys_from_file(const std::string& filename);
 
 #endif // !INPUT_H
