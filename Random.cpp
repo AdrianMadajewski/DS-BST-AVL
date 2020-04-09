@@ -1,7 +1,5 @@
 #include "Random.h"
 
-#include <random>		// for std::random_devide, std::mt19937, 
-						// std::uniform_int_distribution<>
 
 #include <algorithm>	// for std::shuffle
 #include <vector>		// for std::vector
@@ -24,5 +22,10 @@ namespace random
 		std::shuffle(result.begin(), result.end(), seed);
 
 		return result;
+	}
+
+	int get_random_number(const int min, const int max) {
+		std::uniform_int_distribution die{ min, max }; 
+		return die(random::seed);
 	}
 }

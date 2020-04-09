@@ -203,7 +203,7 @@ Node* create_AVL(const std::vector<int>& keys, const int start, const int end, c
 		return nullptr;
 
 	int mid = start + (end - start) / 2;
-	Node* root = new Node(keys[mid]);
+	Node* root = new Node(keys.at(mid));
 
 	if (log) {
 		std::cout << "Inserting : " << root->key << '\n';

@@ -1,6 +1,7 @@
 #include "Test.h"
 
 #include "Tree.h"
+#include "Random.h"
 
 #include <vector>		// for std::vector
 #include <iostream>		// for std::cout
@@ -11,10 +12,16 @@
 
 std::vector<int> generate_descending_data(const int data_size) {
 	std::vector<int> result;
-	for (int i = data_size; i >= 1; i--) {
-		result.emplace_back(i);
-	}
+	int counter{ 0 };
 
+	auto big_random_number{ random::get_random_number(data_size_max * 2, 4 * data_size_max) + data_size_max };
+	auto decreasing_value{ random::get_random_number(10, 100) };
+	int number = big_random_number;
+	while (counter < data_size) {
+		number -= decreasing_value;
+		result.emplace_back(number);
+		counter++;
+	}
 	return result;
 }
 
@@ -24,8 +31,10 @@ void run_tests()
 	std::ofstream logBST("log_BST.txt");
 	std::ofstream logAVL("log_AVL.txt");
 
-	logBST << "TEST#\tTYPE\tSIZE\tCREATE\tFIND-MIN\tIN-ORDER\tDSW" << '\n';
-	logAVL << "TEST#\tTYPE\tSIZE\tCREATE\tFIND-MIN\tIN-ORDER" << '\n';
+	const std::string header{ "TEST#\tTYPE\tSIZE\tCREATE\tFIND-MIN\tIN-ORDER\tDSW" };
+
+	logBST << header << '\n';
+	logAVL << header << '\n';
 
 	using time = std::chrono::high_resolution_clock;
 
@@ -85,6 +94,15 @@ void make_test(int test_number, TreeType type, std::vector<int> &keys, std::ostr
 		<< '\t' << duration_print_in_order;
 
 	// DSW
+	start = time::now();
+	root = create_right_vine(root);
+	root = balance_vine(root, keys.size());
+	stop = time::now();
+	auto duration_dsw{ std::chrono::duration_cast<UNIT_TIME>(stop - start).count() };
+	stream << '\t' << duration_dsw << '\n';
+
+	// DSW
+	/*
 	if (type == BST) {
 		start = time::now();
 		root = create_right_vine(root);
@@ -96,6 +114,10 @@ void make_test(int test_number, TreeType type, std::vector<int> &keys, std::ostr
 	else {
 		stream << '\n';
 	}
+	*/
+
+	root = make_empty(root);
+	delete root;
 
 	std::cout << "TEST " << test_number << " with size = " << keys.size() << " ended." << '\n';
 }

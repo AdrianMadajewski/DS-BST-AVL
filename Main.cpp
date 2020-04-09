@@ -6,7 +6,6 @@
 #include "Node.h"
 #include "Utility.h"
 #include "Test.h"
-#include "Test.h"
 
 int main() {
 
@@ -45,7 +44,7 @@ int main() {
 		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-		auto keys = load_keys_from_file(filename);
+		auto keys{ load_keys_from_file(filename) };
 		print_keys(keys);
 		
 		Tree* bst = new Tree(keys, BST);
@@ -66,7 +65,6 @@ int main() {
 		print_keys(keys);
 
 		Tree* avl = new Tree(keys, AVL);
-		std::cin.get();
 		user_decide(*avl);
 		delete avl;
 
@@ -102,6 +100,10 @@ int main() {
 		std::cin.get();
 		system("cls");
 	}
+
+	// print_keys(generate_descending_data(10));
+	// std::cin.get();
+	// std::cin.get();
 
 	bool make_tests{ ask_user_if("Run tests? : 1 = yes, 0 = no") };
 
